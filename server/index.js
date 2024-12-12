@@ -28,18 +28,24 @@ io.on("connection", (socket) => {
   })
   
   io.to(socket.id).emit("whiteboard-state", {elements});
-  console.log(`${elements}`);
   
   socket.on("element-update", ({elementData, roomID}) => {
     updateElementInElements(elementData);
-    console.log(`ElemedData : : ${JSON.stringify(elementData)}`);
     
 
 
     socket.broadcast.to(roomID).emit("element-update", elementData);
   });
 
-  socket.on("whiteboard-clear", ({roomID}) => {
+  socket.on('student-sleeping', ({userID, roomID}) => {
+    socket.broadcast.to(roomID).emit('student-sleeping', userID)
+  })
+
+  socket.on('message', ({userID, message, roomID, messageCopy}) => {
+    socket.broadcast.to(roomID).emit('message', {userID, message, roomID, messageCopy})
+  })
+
+  socket.on("whiteboard-clear", (roomID) => {
     elements = [];
 
     socket.broadcast.to(roomID).emit("whiteboard-clear");
@@ -51,6 +57,19 @@ io.on("connection", (socket) => {
       userId: socket.id,
     });
   });
+
+  socket.on('quiz', ({correctAnswer, roomID}) => {
+    console.log(correctAnswer);
+    
+    socket.broadcast.to(roomID).emit('quiz', {correctAnswer})
+  })
+
+
+  socket.on('audioStream', ({audioData, roomID}) => {
+    socket.broadcast.to(roomID).emit('audioStream', {audioData});
+  });
+
+
 
   socket.on("disconnect", () => {
     socket.broadcast.emit("user-disconnected", socket.id);

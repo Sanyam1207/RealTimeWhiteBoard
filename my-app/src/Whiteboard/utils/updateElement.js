@@ -66,20 +66,13 @@ export const updateElement = (
       emitElementUpdate(updatedPencilElement, roomID);
       break;
     case toolTypes.TEXT:
-      const textWidth = document
-        .getElementById("canvas")
-        .getContext("2d")
-        .measureText(text).width;
-
-      const textHeight = 24;
-
       elementsCopy[index] = {
         ...createElement({
           id,
           x1,
           y1,
-          x2: x1 + textWidth,
-          y2: y1 + textHeight,
+          x2,
+          y2,
           toolType: type,
           text,
         }),
@@ -93,7 +86,6 @@ export const updateElement = (
       break;
 
     case toolTypes.IMAGE: {
-
       console.log(`from update lemene t : :\n\n ${id} \n ${src}`);
       
       elementsCopy[index] = {
@@ -101,8 +93,9 @@ export const updateElement = (
           id,
           x1,
           y1,
-          x2: x1 + 300,
-          y2: y2 + 300,
+          toolType: type,
+          x2,
+          y2,
           src: src
         })
       }
@@ -111,6 +104,8 @@ export const updateElement = (
 
       store.dispatch(setElements(elementsCopy));
 
+      console.log("EMitting element ");
+      
       emitElementUpdate(updatedImageElement, roomID);
       break;
     }

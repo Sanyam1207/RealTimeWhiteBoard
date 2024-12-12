@@ -1,5 +1,6 @@
-import { toolTypes } from "../../constants";
 import rough from "roughjs/bundled/rough.esm";
+import { toolTypes } from "../../constants";
+import { emitElementUpdate } from "../../socketConn/socketConn";
 
 const generator = rough.generator();
 
@@ -11,7 +12,7 @@ const generateLine = ({ x1, y1, x2, y2 }) => {
   return generator.line(x1, y1, x2, y2);
 };
 
-export const createElement = ({ x1, y1, x2, y2, toolType, id, text, src }) => {
+export const createElement = ({ x1, y1, x2, y2, toolType, id, text, src, roomID }) => {
   let roughElement;
 
   switch (toolType) {
@@ -48,7 +49,11 @@ export const createElement = ({ x1, y1, x2, y2, toolType, id, text, src }) => {
 
       const img = new Image();
       img.src = src;
-      return { id, type: toolType,img, src, x1, y1, x2, y2 }; // Temporary element
+      const element = {id, type: toolType,img, src, x1, y1, x2, y2}
+      emitElementUpdate(element, roomID)
+
+      return { id, type: toolType, img, src, x1, y1, x2, y2 }; // Temporary element
+
     case toolTypes.TEXT:
       return { id, type: toolType, x1, y1, x2, y2, text: text || "" };
     default:

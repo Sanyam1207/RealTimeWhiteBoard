@@ -3,6 +3,9 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   tool: null,
   elements: [],
+  slepingStudent: null,
+  messages: [{}],
+  quizAnswer: null
 };
 
 const whiteboardSlice = createSlice({
@@ -29,10 +32,19 @@ const whiteboardSlice = createSlice({
     setElements: (state, action) => {
       state.elements = action.payload;
     },
+    setSleepingStudent: (state, action) => {
+      state.slepingStudent = action.payload
+    },
+    setMessages: (state, action) => {
+      state.messages = action.payload
+    },
+    setQuizAnswer: (state, action) => {
+      state.quizAnswer = action.payload
+    }
   },
 });
 
-export const { setToolType, updateElement, setElements } =
+export const { setToolType, updateElement, setElements, setSleepingStudent, setMessages, setQuizAnswer } =
   whiteboardSlice.actions;
 
 export default whiteboardSlice.reducer;

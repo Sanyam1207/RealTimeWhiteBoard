@@ -20,6 +20,7 @@ const positionWithinElement = (x, y, element) => {
   const { type, x1, x2, y1, y2 } = element;
 
   switch (type) {
+    case toolTypes.IMAGE:
     case toolTypes.RECTANGLE:
       const topLeft = nearPoint(x, y, x1, y1, cursorPositions.TOP_LEFT);
       const topRight = nearPoint(x, y, x2, y1, cursorPositions.TOP_RIGHT);
@@ -57,6 +58,8 @@ const positionWithinElement = (x, y, element) => {
       });
 
       return betweenAnyPoint ? cursorPositions.INSIDE : null;
+
+    default : break;
   }
 };
 

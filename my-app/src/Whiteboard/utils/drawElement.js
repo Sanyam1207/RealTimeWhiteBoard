@@ -1,10 +1,10 @@
-import { toolTypes } from "../../constants";
 import { getStroke } from "perfect-freehand";
 import { getSvgPathFromStroke } from ".";
+import { toolTypes } from "../../constants";
 
 const drawPencilElement = (context, element) => {
   const myStroke = getStroke(element.points, {
-    size: 10,
+    size: 3,
   });
 
   const pathData = getSvgPathFromStroke(myStroke);
@@ -22,7 +22,7 @@ const drawTextElement = (context, element) => {
 const drawImageElement = (context, element) => {
   const img = new Image()
   img.src = element.src
-  context.drawImage(img, element.x1, element.y1, 100, 100);
+  context.drawImage(img, element.x1, element.y1, img.naturalWidth/6, img.naturalHeight/6);
 }
 
 export const drawElement = ({ roughCanvas, context, element }) => {

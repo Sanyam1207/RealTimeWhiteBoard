@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setElements, setToolType } from "./whiteboardSlice";
 import { emitClearWhiteboard } from "../socketConn/socketConn";
 
-const IconButton = ({ src, type, isRubber }) => {
+const IconButton = ({ src, type, isRubber, roomID }) => {
   const dispatch = useDispatch();
 
   const selectedToolType = useSelector((state) => state.whiteboard.tool);
@@ -23,7 +23,7 @@ const IconButton = ({ src, type, isRubber }) => {
   const handleClearCanvas = () => {
     dispatch(setElements([]));
 
-    emitClearWhiteboard();
+    emitClearWhiteboard(roomID);
   };
 
   return (
@@ -38,12 +38,12 @@ const IconButton = ({ src, type, isRubber }) => {
   );
 };
 
-const Menu = () => {
+const Menu = ({roomID}) => {
   return (
     <div className="menu_container">
       <IconButton src={rectangleIcon} type={toolTypes.RECTANGLE} />
       <IconButton src={lineIcon} type={toolTypes.LINE} />
-      <IconButton src={rubberIcon} isRubber />
+      <IconButton src={rubberIcon} isRubber roomID={roomID} />
       <IconButton src={pencilIcon} type={toolTypes.PENCIL} />
       <IconButton src={textIcon} type={toolTypes.TEXT} />
       <IconButton src={selectionIcon} type={toolTypes.SELECTION} />
